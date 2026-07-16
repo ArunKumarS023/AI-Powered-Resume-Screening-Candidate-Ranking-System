@@ -1,0 +1,144 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+
+<div class="col-md-9">
+
+<div class="card p-4 shadow-lg">
+
+    <h3 class="mb-4">➕ Create Job Posting</h3>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <!-- ================= BASIC DETAILS ================= -->
+        <h5 class="mt-2 mb-3 text-primary">📋 Basic Details</h5>
+
+        <div class="mb-3">
+            <label class="form-label">Job Title</label>
+            <input type="text" name="title" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Job Description</label>
+            <textarea name="description" class="form-control" rows="4" required></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Required Skills</label>
+            <input type="text" name="skills" class="form-control" placeholder="python, django, ml">
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Experience Required</label>
+                <input type="text" name="experience" class="form-control" placeholder="2+ years">
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Location</label>
+                <input type="text" name="location" class="form-control" placeholder="Coimbatore">
+            </div>
+        </div>
+
+        <hr class="my-4">
+
+        <!-- ================= QUALIFICATION ================= -->
+        <h5 class="mb-3 text-primary">🎓 Qualification</h5>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Qualification</label>
+                <input type="text" name="qualification" class="form-control" placeholder="B.E. / B.Tech">
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Education (short)</label>
+                <input type="text" name="education" class="form-control" placeholder="UG / PG">
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Eligible Branches</label>
+            <input type="text" name="eligible_branches" class="form-control"
+                   placeholder="CSE, IT, AIML, AIDS, Data Science">
+            <small class="text-muted">Comma-separated list of eligible branches</small>
+        </div>
+
+        <hr class="my-4">
+
+        <!-- ================= STUDENT ELIGIBILITY ================= -->
+        <h5 class="mb-3 text-primary">🧑‍🎓 Student Eligibility</h5>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Current Semester</label>
+                <input type="text" name="current_semester" class="form-control" placeholder="7th semester">
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Expected Graduation</label>
+                <input type="text" name="expected_graduation" class="form-control" placeholder="June/July 2027">
+            </div>
+        </div>
+
+        <hr class="my-4">
+
+        <!-- ================= ACADEMIC CRITERIA ================= -->
+        <h5 class="mb-3 text-primary">📊 Academic Criteria</h5>
+
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label class="form-label">Min. 10th % (SSC)</label>
+                <input type="number" step="0.1" name="min_tenth_percentage" class="form-control" placeholder="75">
+            </div>
+            <div class="col-md-4 mb-3">
+                <label class="form-label">Min. 12th % (HSC)</label>
+                <input type="number" step="0.1" name="min_twelfth_percentage" class="form-control" placeholder="70">
+            </div>
+            <div class="col-md-4 mb-3">
+                <label class="form-label">Min. Graduation CGPA</label>
+                <input type="number" step="0.1" name="min_cgpa" class="form-control" placeholder="6.5">
+            </div>
+        </div>
+
+        <hr class="my-4">
+
+        <!-- ================= OFFER DETAILS ================= -->
+        <h5 class="mb-3 text-primary">💼 Offer Details</h5>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Stipend / Salary</label>
+                <input type="text" name="stipend" class="form-control" placeholder="₹25,000 per month">
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Work Mode</label>
+                <select name="work_mode" class="form-control">
+                    <option value="">Select work mode</option>
+                    <option value="Work from Office">Work from Office</option>
+                    <option value="Remote">Remote</option>
+                    <option value="Hybrid">Hybrid</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Additional Requirements</label>
+            <textarea name="additional_requirements" class="form-control" rows="3"
+                      placeholder="Willingness to relocate, full-time commitment, etc."></textarea>
+        </div>
+
+        <!-- SUBMIT -->
+        <button class="btn btn-primary w-100 mt-3">
+            🚀 Create Job
+        </button>
+
+    </form>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

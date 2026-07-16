@@ -1,0 +1,111 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+
+<style>
+body {
+    background: linear-gradient(135deg, #5f2c82, #49a09d);
+    min-height: 100vh;
+}
+
+/* LOGIN CARD */
+.login-box {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    animation: fadeIn 0.6s ease-in-out;
+}
+
+/* INPUT */
+.form-control {
+    border-radius: 10px;
+}
+
+/* BUTTON */
+.btn-login {
+    border-radius: 10px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn-login:hover {
+    transform: scale(1.03);
+}
+
+/* ICON */
+.login-icon {
+    font-size: 50px;
+    color: #5f2c82;
+}
+
+/* ANIMATION */
+@keyframes fadeIn {
+    from {opacity: 0; transform: translateY(20px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+</style>
+{% if form.errors %}
+    <div class="alert alert-danger mt-2">
+        Invalid username or password
+    </div>
+{% endif %}
+<div class="container d-flex justify-content-center align-items-center" style="height:80vh;">
+
+    <div class="col-md-4">
+
+        <div class="login-box text-center">
+
+            <!-- ICON -->
+            <div class="mb-3">
+                <i class="fa fa-user-circle login-icon"></i>
+            </div>
+
+            <!-- TITLE -->
+            <h4 class="fw-bold mb-2">Welcome Back 👋</h4>
+            <p class="text-muted">Login to continue</p>
+
+           <!-- FORM -->
+<form method="POST" autocomplete="off">
+    {% csrf_token %}
+
+    <!-- 🔒 HIDDEN FIELDS (ANTI AUTOFILL TRICK) -->
+    <input type="text" name="fakeuser" style="display:none">
+    <input type="password" name="fakepass" style="display:none">
+
+    <!-- USERNAME -->
+    <div class="mb-3 text-start">
+        <label class="form-label">Username</label>
+        <input type="text" name="username" class="form-control"
+               placeholder="Enter username"
+               autocomplete="off" required>
+    </div>
+
+    <!-- PASSWORD -->
+    <div class="mb-3 text-start">
+        <label class="form-label">Password</label>
+        <input type="password" name="password" class="form-control"
+               placeholder="Enter password"
+               autocomplete="new-password" required>
+    </div>
+
+    <!-- BUTTON -->
+    <button type="submit" class="btn btn-primary w-100">
+        🔐 Login
+    </button>
+
+</form>
+
+            <!-- EXTRA -->
+            <hr>
+            <small class="text-muted">
+                AI Resume Screener • Secure Login
+            </small>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

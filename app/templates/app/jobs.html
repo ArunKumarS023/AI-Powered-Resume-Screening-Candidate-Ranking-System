@@ -1,0 +1,256 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap');
+
+  .jl-page {
+    --ink: #0B1220;
+    --paper: #F7F8FA;
+    --blue: #2F6FED;
+    --amber: #F2A93B;
+    --green: #22C55E;
+    --slate: #5B6472;
+    --line: #E4E7EC;
+
+    font-family: 'Inter', sans-serif;
+    color: var(--ink);
+    max-width: 1180px;
+    margin: 0 auto 60px auto;
+  }
+
+  .jl-page * { box-sizing: border-box; }
+
+  .jl-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 22px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .jl-eyebrow {
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .jl-eyebrow .jl-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--green); display: inline-block;
+  }
+
+  .jl-heading {
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-weight: 700;
+    font-size: 26px;
+    color: #fff;
+    margin: 0;
+  }
+
+  .jl-create-btn {
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: 13px;
+    background: var(--blue);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: transform 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .jl-create-btn:hover { transform: translateY(-1px); color: #fff; }
+
+  .jl-search-form { margin-bottom: 26px; }
+
+  .jl-search-input {
+    width: 100%;
+    font-family: 'Inter', sans-serif;
+    font-size: 14.5px;
+    padding: 14px 18px;
+    border: none;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.12);
+  }
+
+  .jl-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  @media (max-width: 950px) {
+    .jl-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 650px) {
+    .jl-grid { grid-template-columns: 1fr; }
+  }
+
+  .jl-card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 22px 22px 20px 22px;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .jl-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 26px rgba(11,18,32,0.12);
+  }
+
+  .jl-card-req {
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--slate);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .jl-card-req .jl-dot-sm {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--green); display: inline-block;
+  }
+
+  .jl-card-title {
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-weight: 700;
+    font-size: 17px;
+    margin: 0 0 10px 0;
+    color: var(--ink);
+  }
+
+  .jl-card-desc {
+    font-size: 13.5px;
+    color: #4A5364;
+    line-height: 1.55;
+    margin-bottom: 14px;
+    flex-grow: 0;
+  }
+
+  .jl-skills-label {
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--slate);
+    margin-bottom: 8px;
+  }
+
+  .jl-skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+
+  .jl-skill-tag {
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: 11.5px;
+    background: #EDF2FF;
+    color: var(--blue);
+    border: 1px solid #D6E0FB;
+    padding: 4px 9px;
+    border-radius: 6px;
+  }
+
+  .jl-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-size: 12.5px;
+    color: var(--slate);
+    margin-bottom: 16px;
+  }
+
+  .jl-meta span { display: flex; align-items: center; gap: 6px; }
+
+  .jl-view-btn {
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: 12.5px;
+    background: var(--blue);
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    text-align: center;
+    margin-top: auto;
+    transition: transform 0.15s ease;
+  }
+  .jl-view-btn:hover { transform: translateY(-1px); color: #fff; }
+
+  .jl-empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: rgba(255,255,255,0.7);
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    padding: 40px 0;
+  }
+</style>
+
+<div class="jl-page">
+
+  <div class="jl-header-row">
+    <div>
+      <div class="jl-eyebrow"><span class="jl-dot"></span> OPEN REQUISITIONS</div>
+      <h2 class="jl-heading">Job Listings</h2>
+    </div>
+    <a href="/create-job/" class="jl-create-btn">+ Create Job</a>
+  </div>
+
+  <form method="GET" class="jl-search-form">
+    <input type="text" name="q" value="{{ request.GET.q }}"
+           class="jl-search-input" placeholder="Search jobs by title or description...">
+  </form>
+
+  <div class="jl-grid">
+
+    {% for job in jobs %}
+    <div class="jl-card">
+      <div class="jl-card-req"><span class="jl-dot-sm"></span> REQ-{{ job.id }}00{{ job.id }}</div>
+      <h3 class="jl-card-title">{{ job.title }}</h3>
+      <p class="jl-card-desc">{{ job.description|truncatewords:15 }}</p>
+
+      {% if job.skill_list %}
+      <div class="jl-skills-label">Required Skills</div>
+      <div class="jl-skills">
+        {% for skill in job.skill_list %}
+          <span class="jl-skill-tag">{{ skill }}</span>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <div class="jl-meta">
+        <span>📍 {{ job.location|default:"Not specified" }}</span>
+        <span>💼 {{ job.experience|default:"Not specified" }}</span>
+        <span>🎓 {{ job.education|default:"Not specified" }}</span>
+      </div>
+
+      <a href="/job/{{ job.id }}/" class="jl-view-btn">→ View Details</a>
+    </div>
+    {% empty %}
+      <p class="jl-empty">No jobs available</p>
+    {% endfor %}
+
+  </div>
+
+</div>
+
+{% endblock %}

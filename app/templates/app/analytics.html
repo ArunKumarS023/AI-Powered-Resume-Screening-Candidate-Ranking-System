@@ -1,0 +1,236 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap');
+
+  .ap-page {
+    --ink: #0B1220;
+    --paper: #F7F8FA;
+    --blue: #2F6FED;
+    --amber: #F2A93B;
+    --green: #22C55E;
+    --red: #E5484D;
+    --slate: #5B6472;
+    --line: #E4E7EC;
+
+    font-family: 'Inter', sans-serif;
+    color: var(--ink);
+    max-width: 1180px;
+    margin: 0 auto 60px auto;
+  }
+
+  .ap-page * { box-sizing: border-box; }
+
+  .ap-eyebrow {
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .ap-eyebrow .ap-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--green); display: inline-block;
+  }
+
+  .ap-heading {
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-weight: 700;
+    font-size: 28px;
+    color: #fff;
+    margin: 0 0 26px 0;
+  }
+
+  .ap-card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 24px 26px;
+    margin-bottom: 20px;
+  }
+
+  .ap-section-label {
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--slate);
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .ap-section-label::before { content: "//"; color: var(--blue); font-weight: 700; }
+
+  .ap-dist-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+  }
+
+  @media (max-width: 800px) { .ap-dist-grid { grid-template-columns: repeat(2, 1fr); } }
+
+  .ap-dist-tile {
+    text-align: center;
+    padding: 18px 10px;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    background: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ap-dist-tile::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 3px;
+  }
+  .ap-dist-tile.d1::before { background: var(--green); }
+  .ap-dist-tile.d2::before { background: var(--blue); }
+  .ap-dist-tile.d3::before { background: #38BDF8; }
+  .ap-dist-tile.d4::before { background: var(--amber); }
+  .ap-dist-tile.d5::before { background: var(--red); }
+
+  .ap-dist-value {
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-weight: 700;
+    font-size: 26px;
+  }
+  .ap-dist-tile.d1 .ap-dist-value { color: var(--green); }
+  .ap-dist-tile.d2 .ap-dist-value { color: var(--blue); }
+  .ap-dist-tile.d3 .ap-dist-value { color: #38BDF8; }
+  .ap-dist-tile.d4 .ap-dist-value { color: var(--amber); }
+  .ap-dist-tile.d5 .ap-dist-value { color: var(--red); }
+
+  .ap-dist-label {
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: 11px;
+    color: var(--slate);
+    margin-top: 4px;
+  }
+
+  .ap-table-wrap { overflow-x: auto; }
+
+  .ap-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+  }
+
+  .ap-table thead th {
+    text-align: left;
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--slate);
+    border-bottom: 1px solid var(--line);
+    padding: 10px 12px;
+  }
+
+  .ap-table tbody td {
+    padding: 12px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: middle;
+  }
+
+  .ap-chip {
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: 11.5px;
+    padding: 3px 10px;
+    border-radius: 999px;
+  }
+  .ap-chip-blue { background: rgba(47,111,237,0.12); color: var(--blue); }
+  .ap-chip-green { background: rgba(34,197,94,0.12); color: var(--green); }
+
+  .ap-action-link {
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: 11.5px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    background: var(--blue);
+    color: #fff;
+  }
+
+  .ap-empty { text-align: center; color: var(--slate); padding: 20px 0; }
+</style>
+
+<div class="ap-page">
+
+  <div class="ap-eyebrow"><span class="ap-dot"></span> METRICS</div>
+  <h1 class="ap-heading">📊 Analytics Dashboard</h1>
+
+  <!-- ================= SCORE DISTRIBUTION ================= -->
+  <div class="ap-card">
+    <div class="ap-section-label">score_distribution</div>
+
+    <div class="ap-dist-grid">
+      <div class="ap-dist-tile d1">
+        <div class="ap-dist-value">{{ ranges.r1 }}</div>
+        <div class="ap-dist-label">90-100%</div>
+      </div>
+      <div class="ap-dist-tile d2">
+        <div class="ap-dist-value">{{ ranges.r2 }}</div>
+        <div class="ap-dist-label">80-89%</div>
+      </div>
+      <div class="ap-dist-tile d3">
+        <div class="ap-dist-value">{{ ranges.r3 }}</div>
+        <div class="ap-dist-label">70-79%</div>
+      </div>
+      <div class="ap-dist-tile d4">
+        <div class="ap-dist-value">{{ ranges.r4 }}</div>
+        <div class="ap-dist-label">60-69%</div>
+      </div>
+      <div class="ap-dist-tile d5">
+        <div class="ap-dist-value">{{ ranges.r5 }}</div>
+        <div class="ap-dist-label">Below 60%</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= JOB-WISE STATS ================= -->
+  <div class="ap-card">
+    <div class="ap-section-label">job_wise_statistics</div>
+
+    <div class="ap-table-wrap">
+      <table class="ap-table">
+        <thead>
+          <tr>
+            <th>Job Title</th>
+            <th>Total Résumés</th>
+            <th>Average Score</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for j in job_stats %}
+          <tr>
+            <td><b>{{ j.title }}</b></td>
+            <td><span class="ap-chip ap-chip-blue">{{ j.total_resumes }}</span></td>
+            <td>
+              <span class="ap-chip ap-chip-green">
+                {% if j.avg_score %}{{ j.avg_score|floatformat:2 }}%{% else %}0%{% endif %}
+              </span>
+            </td>
+            <td><a href="/job/{{ j.id }}/" class="ap-action-link"><i class="fa fa-eye"></i> View</a></td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="4" class="ap-empty">No data available</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

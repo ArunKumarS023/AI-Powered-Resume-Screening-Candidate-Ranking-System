@@ -1,0 +1,326 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap');
+
+  .hp-page {
+    --ink: #0B1220;
+    --paper: #F7F8FA;
+    --blue: #2F6FED;
+    --amber: #F2A93B;
+    --green: #22C55E;
+    --red: #E5484D;
+    --slate: #5B6472;
+    --line: #E4E7EC;
+
+    font-family: 'Inter', sans-serif;
+    color: var(--ink);
+    max-width: 1180px;
+    margin: 0 auto 60px auto;
+  }
+
+  .hp-page * { box-sizing: border-box; }
+
+  /* ===== HEADER ===== */
+  .hp-eyebrow {
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .hp-eyebrow .hp-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--green); display: inline-block;
+  }
+
+  .hp-heading {
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-weight: 700;
+    font-size: 30px;
+    color: #fff;
+    margin: 0 0 6px 0;
+  }
+
+  .hp-sub {
+    color: rgba(255,255,255,0.7);
+    font-size: 14px;
+    margin-bottom: 30px;
+  }
+
+  /* ===== STAT TILES ===== */
+  .hp-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 34px;
+  }
+
+  @media (max-width: 800px) { .hp-stats { grid-template-columns: repeat(2, 1fr); } }
+
+  .hp-tile {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hp-tile::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 3px;
+  }
+  .hp-tile.t-blue::before { background: var(--blue); }
+  .hp-tile.t-green::before { background: var(--green); }
+  .hp-tile.t-amber::before { background: var(--amber); }
+  .hp-tile.t-red::before { background: var(--red); }
+
+  .hp-tile-label {
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--slate);
+    margin-bottom: 8px;
+  }
+
+  .hp-tile-value {
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-weight: 700;
+    font-size: 32px;
+    color: var(--ink);
+  }
+
+  /* ===== SECTION CARD ===== */
+  .hp-card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 24px 26px;
+    margin-bottom: 20px;
+  }
+
+  .hp-section-label {
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--slate);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .hp-section-label::before { content: "//"; color: var(--blue); font-weight: 700; }
+
+  /* ===== TABLE ===== */
+  .hp-table-wrap { overflow-x: auto; }
+
+  .hp-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+  }
+
+  .hp-table thead th {
+    text-align: left;
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--slate);
+    border-bottom: 1px solid var(--line);
+    padding: 10px 12px;
+  }
+
+  .hp-table tbody td {
+    padding: 12px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: middle;
+  }
+
+  .hp-count-chip {
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: 11.5px;
+    background: var(--ink);
+    color: #fff;
+    padding: 3px 10px;
+    border-radius: 999px;
+  }
+
+  .hp-action-link {
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: 11.5px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    margin-right: 6px;
+    display: inline-block;
+  }
+  .hp-action-view { background: var(--blue); color: #fff; }
+  .hp-action-upload { background: var(--green); color: #fff; }
+
+  /* ===== BOTTOM TWO-COLUMN ===== */
+  .hp-bottom-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  @media (max-width: 800px) { .hp-bottom-grid { grid-template-columns: 1fr; } }
+
+  .hp-feature-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .hp-feature-list li {
+    font-size: 13.5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #2A3242;
+  }
+
+  .hp-feature-icon {
+    width: 20px; height: 20px;
+    border-radius: 6px;
+    background: rgba(47,111,237,0.12);
+    color: var(--blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    flex-shrink: 0;
+  }
+
+  .hp-quick-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .hp-quick-btn {
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: 13px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: transform 0.15s ease;
+  }
+  .hp-quick-btn:hover { transform: translateY(-1px); }
+
+  .hp-quick-btn.qa-blue { background: var(--blue); color: #fff; }
+  .hp-quick-btn.qa-ink { background: var(--ink); color: #fff; }
+  .hp-quick-btn.qa-outline { background: #fff; color: var(--ink); border: 1px solid var(--line); }
+
+  .hp-empty { text-align: center; color: var(--slate); padding: 20px 0; }
+</style>
+
+<div class="hp-page">
+
+  <!-- ================= HEADER ================= -->
+  <div class="hp-eyebrow"><span class="hp-dot"></span> SYSTEM STATUS · ONLINE</div>
+  <h1 class="hp-heading">🤖 AI Resume Screening System</h1>
+  <p class="hp-sub">Smart hiring with AI-powered resume analysis</p>
+
+  <!-- ================= STAT TILES ================= -->
+  <div class="hp-stats">
+    <div class="hp-tile t-blue">
+      <div class="hp-tile-label">Total Jobs</div>
+      <div class="hp-tile-value">{{ total_jobs }}</div>
+    </div>
+    <div class="hp-tile t-green">
+      <div class="hp-tile-label">Résumés Screened</div>
+      <div class="hp-tile-value">{{ total_resumes }}</div>
+    </div>
+    <div class="hp-tile t-amber">
+      <div class="hp-tile-label">Average Score</div>
+      <div class="hp-tile-value">{{ avg_score }}%</div>
+    </div>
+    <div class="hp-tile t-red">
+      <div class="hp-tile-label">Shortlisted</div>
+      <div class="hp-tile-value">{{ shortlisted }}</div>
+    </div>
+  </div>
+
+  <!-- ================= RECENT JOB POSTINGS ================= -->
+  <div class="hp-card">
+    <div class="hp-section-label">recent_postings</div>
+
+    <div class="hp-table-wrap">
+      <table class="hp-table">
+        <thead>
+          <tr>
+            <th>Job Title</th>
+            <th>Experience</th>
+            <th>Location</th>
+            <th>Résumés</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in job_data %}
+          <tr>
+            <td><b>{{ item.job.title }}</b></td>
+            <td>{{ item.job.experience|default:"—" }}</td>
+            <td>{{ item.job.location|default:"—" }}</td>
+            <td><span class="hp-count-chip">{{ item.resumes|length }}</span></td>
+            <td>
+              <a href="/job/{{ item.job.id }}/" class="hp-action-link hp-action-view">View</a>
+              <a href="/upload/{{ item.job.id }}/" class="hp-action-link hp-action-upload">Upload</a>
+            </td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="5" class="hp-empty">No jobs available</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ================= BOTTOM GRID ================= -->
+  <div class="hp-bottom-grid">
+
+    <div class="hp-card">
+      <div class="hp-section-label">key_features</div>
+      <ul class="hp-feature-list">
+        <li><span class="hp-feature-icon">✓</span> AI Resume Matching (Transformer embeddings)</li>
+        <li><span class="hp-feature-icon">✓</span> PDF Resume Parsing</li>
+        <li><span class="hp-feature-icon">✓</span> Smart Score Calculation</li>
+        <li><span class="hp-feature-icon">✓</span> Candidate Ranking</li>
+        <li><span class="hp-feature-icon">✓</span> Analytics Dashboard</li>
+      </ul>
+    </div>
+
+    <div class="hp-card">
+      <div class="hp-section-label">quick_actions</div>
+      <div class="hp-quick-actions">
+        <a href="/jobs/" class="hp-quick-btn qa-blue">📋 View Jobs</a>
+        <a href="/create-job/" class="hp-quick-btn qa-ink">+ Create Job</a>
+        <a href="/analytics/" class="hp-quick-btn qa-outline">📊 Analytics</a>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+{% endblock %}
